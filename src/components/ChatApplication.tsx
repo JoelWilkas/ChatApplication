@@ -17,7 +17,7 @@ function ChatApplication({auth}: any){
     const [user] = useAuthState(auth)
 
     useEffect(() => {
-        setSocket(io('localhost:8080'))
+        setSocket(io('98.128.243.103:8080'))
     
         return
     },[])
