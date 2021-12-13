@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
-import io from 'socket.io-client'
+import { useState, useEffect } from 'react'
 import Register from './Register'
 import Login from './Login'
 import ChatApplication from './ChatApplication'
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, EmailAuthProvider, signInWithPopup, updateProfile } from 'firebase/auth'
+import SelectRoom from './SelectRoom'
+import io from 'socket.io-client'
+
+import { getAuth } from 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import * as firebase from 'firebase/app'
 import {Route, Routes, Link, BrowserRouter as Router} from 'react-router-dom'
@@ -26,26 +28,26 @@ const firebaseConfig = {
     appId: process.env.REACT_APP_APPID
 }
 
-
 const app = firebase.initializeApp(firebaseConfig);
 const auth = getAuth(app)
 
-
 function App(){
 
-    console.log(process.env)
+    const [socket, setSocket] = useState(io)
+
+    useEffect(() => {
+        setSocket(io('localhost:8080'))
+    
+        return
+    },[])
+
 
     const [user] = useAuthState(auth)
     return(
         <div style={{flexDirection: "column",display: "flex", height: "100vh", width: "100vw", justifyContent: "center", alignItems: "center"}}>
-            {user ? < ChatApplication auth={auth}/> :  <SignInOrRegister />}
+            {user ? <SelectRoom socket={socket} /> :  <SignInOrRegister />}
         </div>
     )
-}
-
-function signOut(e){
-    e.preventDefault()
-    auth.signOut()
 }
 
 function SignInOrRegister(){
@@ -61,7 +63,6 @@ function SignInOrRegister(){
                     <Route path="/Login" element={<Login auth={auth}/>} />
                     <Route path="/Register" element={<Register auth={auth}/>} />
                 </Routes>
-                
             </Router>
         </>
     )

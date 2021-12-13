@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import '../styles/style.css'
 
 
-import * as firebase from 'firebase/app'    
 
 
 
@@ -10,8 +9,7 @@ import * as firebase from 'firebase/app'
 
 
 
-
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, EmailAuthProvider, signInWithPopup, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 
 
 
@@ -20,13 +18,12 @@ function Register({auth} : any){
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [users, setUsers] = useState({user: Object})
 
     const [username, setUsername] = useState("")
 
     function formSubmit(e: any){
         e.preventDefault()
-        if(password == "") return alert("Password needs to be atleast 6 characters")
+        if(password === "") return alert("Password needs to be atleast 6 characters")
 
         createUserWithEmailAndPassword(auth, email, password).then((user: any) => {
             console.log(user)
@@ -34,8 +31,6 @@ function Register({auth} : any){
             updateProfile(auth.currentUser, {
                 displayName: username
             })
-
-            setUsers(user)
 
             console.log(user)
 

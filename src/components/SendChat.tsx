@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import iMessage from '../interfaces/iMessage'
 
 
 
 export default function SendChat({socket, auth}: any){
     const user = auth.currentUser
-    
 
     const [message, setMessage] = useState({})
 
     function onFormSubmit(e: any){
         e.preventDefault()
-        if(e.target.elements.message.value ==  "") return
+        if(e.target.elements.message.value ===  "") return
         e.target.elements.message.value = ""
         socket.emit('message', {message})
     }

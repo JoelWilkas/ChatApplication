@@ -9,8 +9,9 @@ export default function ChatBox ({socket} : any){
     const [chat, setChat] = useState(Array)
 
     useEffect(() => {
-        socket.on('message', (message :any) => {
+        socket.on('message', ({ message }: any) => {
             setChat([...chat, message])
+            console.log(message)
             dummy.current?.scrollIntoView({ behavior: "smooth"})
         })
 
